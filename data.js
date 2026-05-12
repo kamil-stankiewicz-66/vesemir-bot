@@ -64,7 +64,8 @@ const quotesBadChannelReaction = [
 
 const mediaTypes = [
     'image', 
-    'video'
+    'video',
+    'audio'
 ];
 
 
