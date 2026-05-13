@@ -6,18 +6,16 @@ const commands = [
         .setName('vesemir')
         .setDescription('Sterowanie Vesemirem')
 
-        .addBooleanOption(option =>
-            option
-                .setName('message_segregate')
-                .setDescription('Włącza lub wyłącza segregowanie wiadomości na różne kanały.')
-                .setRequired(false)
+        .addBooleanOption(option => option
+            .setName('message_segregate')
+            .setDescription('Włącza lub wyłącza segregowanie wiadomości na różne kanały.')
+            .setRequired(false)
         )
 
-        .addBooleanOption(option =>
-            option
-                .setName('reply_when_wrong_channel')
-                .setDescription('Włącza lub wyłącza odpowiadanie na usuwaną wiadomość.')
-                .setRequired(false)
+        .addBooleanOption(option => option
+            .setName('reply_when_wrong_channel')
+            .setDescription('Włącza lub wyłącza odpowiadanie na usuwaną wiadomość.')
+            .setRequired(false)
         )
 
         .toJSON()
@@ -36,7 +34,7 @@ async function deployCommands()
         }
     );
 
-    console.log('Commands deployed');
+    console.log('log: commands deployed');
 }
 
 deployCommands();

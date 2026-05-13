@@ -31,7 +31,7 @@ client.once('clientReady', async () =>
     channel.send(funcs.getRandom(character.quotes));
 
     //log
-    console.log('vesemirbot is online');
+    console.log('log: vesemir-bot is online');
 });
 
 function updateAcivity()
@@ -58,40 +58,48 @@ client.on('interactionCreate', async (interaction) =>
         return;
     }
 
-    if (interaction.commandName == 'vesemir')
+    if (interaction.commandName != 'vesemir')
     {
-        const logs = [];
+        return;
+    }
 
 
-        //cmd message_segregate
-        const _messageSegregate = interaction.options.getBoolean('message_segregate');
 
-        if (_messageSegregate != null)
-        {
-            dynamic_data.messageSegregate = _messageSegregate;
+    const logs = [];
 
-            logs.push(`message_segregate = ${dynamic_data.messageSegregate}`);
+    //cmd message_segregate
+    const _messageSegregate = interaction.options.getBoolean('message_segregate');
 
-            updateAcivity();
-        }
+    if (_messageSegregate != null)
+    {
+        dynamic_data.messageSegregate = _messageSegregate;
 
+        logs.push(`message_segregate = ${dynamic_data.messageSegregate}`);
 
-        //cmd reply_when_wrong_channel
-        const _replyWhenWrongChannel = interaction.options.getBoolean('reply_when_wrong_channel');
-
-        if (_replyWhenWrongChannel != null)
-        {
-            dynamic_data.replyWhenWrongChannel = _replyWhenWrongChannel;
-
-            logs.push(`reply_when_wrong_channel = ${dynamic_data.replyWhenWrongChannel}`);
-        }
+        updateAcivity();
+    }
 
 
-        //send log to chat
-        if (logs.length > 0)
-        {
-            await interaction.reply(logs.join('\n'));
-        }
+    //cmd reply_when_wrong_channel
+    const _replyWhenWrongChannel = interaction.options.getBoolean('reply_when_wrong_channel');
+
+    if (_replyWhenWrongChannel != null)
+    {
+        dynamic_data.replyWhenWrongChannel = _replyWhenWrongChannel;
+
+        logs.push(`reply_when_wrong_channel = ${dynamic_data.replyWhenWrongChannel}`);
+    }
+
+
+    //send log to chat
+    if (logs.length > 0)
+    {
+        await interaction.reply(logs.join('\n'));
+    }
+    else
+    {
+        let _lines = [...character.quotes, ...character.quotesWrongChannelReaction];
+        await interaction.reply(funcs.getRandom(_lines));
     }
 });
 
