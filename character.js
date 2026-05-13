@@ -26,8 +26,6 @@ const quotes = [
     'Dość gadania. Mamy gryfa do ubicia.',
     'Widzimy się w karczmie.',
     'Nie mieszajmy się. Ten jeden raz.',
-    'Znacie ten medalion, ludzie. Wiecie, co oznacza. Odstąpcie.',
-    'Precz stąd. Wszyscy.',
     'Ho, ho, kogo wiatr niesie! Długo cię tu nie było!',
     'Hola, młodzieńcy! Co to za prywatka? Alkohol, powiadam wam, jest najgorszym wiedźmina wrogiem!',
     'Młodzieńcy, bycie wiedźminem to nie śmiechy i krotochwile, lecz ciężka praca.',
@@ -52,6 +50,8 @@ const quotesWrongChannelReaction = [
     'No, to tyle z niemieszaniem się...',
     'Zresztą, nie widzę potrzeby, żeby ci tłumaczyć.',
     'Miałem nadzieję... Że już nigdy nie będę musiał tego oglądać.',
+    'Znacie ten medalion, ludzie. Wiecie, co oznacza. Odstąpcie.',
+    'Precz stąd. Wszyscy.',
     'Widziałem to już wiele razy. Zbyt wiele.'
 ];
 

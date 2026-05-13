@@ -73,7 +73,7 @@ client.on('interactionCreate', async (interaction) =>
 
     if (action == 'show_vars')
     {
-        logs.push(dynamic_data.log());
+        logs.push(funcs.log(dynamic_data.dynamicData));
     }
     else if (action == 'say_line_neutral')
     {
