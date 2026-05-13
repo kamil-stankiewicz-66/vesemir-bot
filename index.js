@@ -67,6 +67,23 @@ client.on('interactionCreate', async (interaction) =>
 
     const logs = [];
 
+    //cmd action
+    const action = interaction.options.getString('action');
+
+    if (action == 'show_vars')
+    {
+        await interaction.reply(dynamic_data.log());
+    }
+    else if (action == 'say_line_neutral')
+    {
+        await interaction.reply(funcs.getRandom(character.quotes));
+    }
+    else if (action == 'say_line_aggressive')
+    {
+        await interaction.reply(funcs.getRandom(character.quotesWrongChannelReaction));
+    }
+
+
     //cmd message_segregate
     const _messageSegregate = interaction.options.getBoolean('message_segregate');
 
@@ -110,7 +127,7 @@ client.on('interactionCreate', async (interaction) =>
     }
     else
     {
-        let _lines = [...character.quotes, ...character.quotesWrongChannelReaction];
+        const _lines = [...character.quotes, ...character.quotesWrongChannelReaction];
         await interaction.reply(funcs.getRandom(_lines));
     }
 });
@@ -124,8 +141,12 @@ client.on("messageCreate", async (message) =>
     }
 
 
-    //just ping
-    if (message.content == 'ping vesemir')
+    //answer for replies
+    const _isReplied = await isThisReplied(message);
+    if (_isReplied ||
+        message.mentions.users.has(client.user.id) || //tag
+        message.content == 'ping vesemir' //just ping
+    )
     {
         await message.reply(funcs.getRandom(character.quotes));
     }
@@ -185,6 +206,25 @@ async function messageFilter(message)
                 });
             }
         }
+    }
+}
+
+async function isThisReplied(message)
+{
+    if (!message.reference?.messageId)
+    {
+        return false;
+    }
+
+    try
+    {
+        const repliedMessage = await message.channel.messages.fetch(message.reference.messageId);
+        
+        return repliedMessage.author.id == client.user.id;
+    }
+    catch (error)
+    {
+        return false;
     }
 }
 

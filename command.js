@@ -6,6 +6,30 @@ const commands = [
         .setName('vesemir')
         .setDescription('Sterowanie Vesemirem')
 
+        .addStringOption(option => option
+            .setName('action')
+            .setDescription('Co chcesz zrobić?')
+            .setRequired(false)
+            .addChoices(
+                {
+                    name: 'Pokaż stan parametrów.',
+                    value: 'show_vars'
+                }
+            )
+            .addChoices(
+                {
+                    name: 'Powiedz neutralną kwestię.',
+                    value: 'say_line_neutral'
+                }
+            )
+            .addChoices(
+                {
+                    name: 'Powiedz negatywną kwestię.',
+                    value: 'say_line_aggressive'
+                }
+            )
+        )
+
         .addBooleanOption(option => option
             .setName('message_segregate')
             .setDescription('Włącza lub wyłącza segregowanie wiadomości na różne kanały.')

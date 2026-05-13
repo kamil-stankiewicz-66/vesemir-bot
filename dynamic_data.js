@@ -4,4 +4,14 @@ const dynamicData = {
     deleteWhenWrongChannel: true
 };
 
-module.exports = dynamicData;
+function log()
+{
+    return Object.entries(dynamicData)
+        .map(([key, value]) => `${key} = ${value}`)
+        .join('\n');
+}
+
+module.exports = {
+    dynamicData,
+    log
+};
