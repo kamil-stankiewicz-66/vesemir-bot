@@ -14,7 +14,13 @@ const commands = [
 
         .addBooleanOption(option => option
             .setName('reply_when_wrong_channel')
-            .setDescription('Włącza lub wyłącza odpowiadanie na usuwaną wiadomość.')
+            .setDescription('Włącza lub wyłącza odpowiadanie na wiadomość, która została wysłana na zły kanał.')
+            .setRequired(false)
+        )
+
+        .addBooleanOption(option => option
+            .setName('delete_when_wrong_channel')
+            .setDescription('Włącza lub wyłącza usuwanie wiadomości, która została wysłana na zły kanał.')
             .setRequired(false)
         )
 

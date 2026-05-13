@@ -91,6 +91,18 @@ client.on('interactionCreate', async (interaction) =>
     }
 
 
+    //cmd delete_when_wrong_channel
+    const _deleteWhenWrongChannel = interaction.options.getBoolean('delete_when_wrong_channel');
+
+    if (_deleteWhenWrongChannel != null)
+    {
+        dynamic_data.deleteWhenWrongChannel = _deleteWhenWrongChannel;
+
+        logs.push(`delete_when_wrong_channel = ${dynamic_data.deleteWhenWrongChannel}`);
+    }
+
+
+
     //send log to chat
     if (logs.length > 0)
     {
@@ -106,7 +118,6 @@ client.on('interactionCreate', async (interaction) =>
 client.on("messageCreate", async (message) => 
 {
     //skip bots message
-
     if (message.author.bot)
     {
         return;
@@ -114,7 +125,6 @@ client.on("messageCreate", async (message) =>
 
 
     //just ping
-
     if (message.content == 'ping vesemir')
     {
         await message.reply(funcs.getRandom(character.quotes));
@@ -162,15 +172,18 @@ async function messageFilter(message)
             await message.reply(funcs.getRandom(character.quotesWrongChannelReaction));
         }
 
-        await message.delete();
-
-        const cleanedContent = server_manager.removeLinks(message.content);
-        if (cleanedContent.length > 0)
+        if (dynamic_data.deleteWhenWrongChannel)
         {
-            await generalChannel.send(
+            await message.delete();
+
+            const cleanedContent = server_manager.removeLinks(message.content);
+            if (cleanedContent.length > 0)
             {
-                content: `${message.author}: "*${cleanedContent}*"`
-            });
+                await generalChannel.send(
+                {
+                    content: `${message.author}: "*${cleanedContent}*"`
+                });
+            }
         }
     }
 }
@@ -201,6 +214,7 @@ app.listen(port, () =>
 {
     console.log(`Health server running on port ${port}`);
 });
+
 
 
 

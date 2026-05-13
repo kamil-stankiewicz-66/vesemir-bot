@@ -1,6 +1,7 @@
 const dynamicData = {
     messageSegregate: true,
-    replyWhenWrongChannel: true
+    replyWhenWrongChannel: true,
+    deleteWhenWrongChannel: true
 };
 
 module.exports = dynamicData;
