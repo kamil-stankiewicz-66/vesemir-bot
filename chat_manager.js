@@ -21,6 +21,18 @@ function createMovedHeader(message)
     return `od ${message.author}, przeniesione z kanalu ${message.channel}:`;
 }
 
+function makeQuoteStyle(content)
+{
+    if (content.length > 0)
+    {
+        return `"*${content}*"`;
+    }
+    else
+    {
+        return ``;
+    }
+}
+
 
 
 
@@ -80,7 +92,7 @@ async function moveLinks(message, linksChannel)
 
     await linksChannel.send(
     {
-        content:`${createMovedHeader(message)}\n"*${removeLinks(message.content)}*"\n${links.join('\n')}`
+        content:`${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}\n${links.join('\n')}`
     });
 
     return true;
@@ -97,7 +109,7 @@ async function moveFilesByType(message, imagesChannel, types)
 
     await imagesChannel.send(
     {
-        content: `${createMovedHeader(message)}\n"*${removeLinks(message.content)}*"`,
+        content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}`,
         files: files
     });
 
@@ -115,7 +127,7 @@ async function moveFilesExceptType(message, filesChannel, types)
     
     await filesChannel.send(
     {
-        content: `${createMovedHeader(message)}\n"*${removeLinks(message.content)}*"`,
+        content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}`,
         files: files
     });
 
