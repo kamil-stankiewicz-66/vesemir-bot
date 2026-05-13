@@ -64,23 +64,24 @@ client.on('interactionCreate', async (interaction) =>
     }
 
 
-
+    //logs array
     const logs = [];
+
 
     //cmd action
     const action = interaction.options.getString('action');
 
     if (action == 'show_vars')
     {
-        await interaction.reply(dynamic_data.log());
+        logs.push(dynamic_data.log());
     }
     else if (action == 'say_line_neutral')
     {
-        await interaction.reply(funcs.getRandom(character.quotes));
+        logs.push(funcs.getRandom(character.quotes));
     }
     else if (action == 'say_line_aggressive')
     {
-        await interaction.reply(funcs.getRandom(character.quotesWrongChannelReaction));
+        logs.push(funcs.getRandom(character.quotesWrongChannelReaction));
     }
 
 

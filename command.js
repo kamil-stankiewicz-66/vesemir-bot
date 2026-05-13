@@ -12,19 +12,19 @@ const commands = [
             .setRequired(false)
             .addChoices(
                 {
-                    name: 'Pokaż stan parametrów.',
+                    name: 'show_vars',
                     value: 'show_vars'
                 }
             )
             .addChoices(
                 {
-                    name: 'Powiedz neutralną kwestię.',
+                    name: 'say_line_neutral',
                     value: 'say_line_neutral'
                 }
             )
             .addChoices(
                 {
-                    name: 'Powiedz negatywną kwestię.',
+                    name: 'say_line_aggressive',
                     value: 'say_line_aggressive'
                 }
             )
