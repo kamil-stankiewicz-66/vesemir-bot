@@ -5,6 +5,4 @@ const dynamicData = {
 };
 
 
-module.exports = {
-    dynamicData
-};
+module.exports = dynamicData;
