@@ -36,7 +36,7 @@ const quotes = [
     'Odwrót! Do bramy i na dziedziniec!'
 ];
 
-const quotesBadChannelReaction = [
+const quotesWrongChannelReaction = [
     //wiedzmin3
     'Musisz choćby umieć odróżnić alghula od ghula...',    
     'Za stary już na to jestem...',
@@ -59,5 +59,5 @@ const quotesBadChannelReaction = [
 //end of file
 module.exports = {
     quotes,
-    quotesBadChannelReaction
+    quotesWrongChannelReaction
 };
