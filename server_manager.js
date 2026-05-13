@@ -81,7 +81,7 @@ function getFilesExceptTypes(message, types)
 
 //move to
 
-async function moveLinks(message, linksChannel)
+async function moveLinks(message, targetChannel)
 {
     const links = getLinks(message.content);
 
@@ -90,7 +90,7 @@ async function moveLinks(message, linksChannel)
         return false;
     }
 
-    await linksChannel.send(
+    await targetChannel.send(
     {
         content:`${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}\n${links.join('\n')}`
     });
@@ -98,7 +98,7 @@ async function moveLinks(message, linksChannel)
     return true;
 }
 
-async function moveFilesByType(message, imagesChannel, types)
+async function moveFilesByType(message, targetChannel, types)
 {
     const files = getFilesByTypes(message, types);
 
@@ -107,7 +107,7 @@ async function moveFilesByType(message, imagesChannel, types)
         return false;
     }
 
-    await imagesChannel.send(
+    await targetChannel.send(
     {
         content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}`,
         files: files
@@ -116,7 +116,7 @@ async function moveFilesByType(message, imagesChannel, types)
     return true;
 }
 
-async function moveFilesExceptType(message, filesChannel, types)
+async function moveFilesExceptType(message, targetChannel, types)
 {
     const files = getFilesExceptTypes(message, types)
 
@@ -125,7 +125,7 @@ async function moveFilesExceptType(message, filesChannel, types)
         return false;
     }
     
-    await filesChannel.send(
+    await targetChannel.send(
     {
         content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}`,
         files: files

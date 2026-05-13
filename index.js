@@ -10,10 +10,11 @@ const client = new Discord.Client({
     ]
 });
 
+//modules
 const funcs = require('./function.js');
 const data = require('./data.js');
 const character = require('./character.js');
-const chat_manager = require('./chat_manager.js');
+const server_manager = require('./server_manager.js');
 
 
 
@@ -55,8 +56,12 @@ client.on("messageCreate", async (message) =>
     }
     
 
-    //move
+    //chat managment
+    await messageFilter(message);
+});
 
+async function messageFilter(message)
+{
     const generalChannel = await client.channels.fetch(data.channels.general);
     const linksChannel = await client.channels.fetch(data.channels.links);
     const mediaChannel = await client.channels.fetch(data.channels.media);
@@ -65,19 +70,19 @@ client.on("messageCreate", async (message) =>
     let moved = false;
 
     if (message.channel != linksChannel &&
-        await chat_manager.moveLinks(message, linksChannel))
+        await server_manager.moveLinks(message, linksChannel))
     {
         moved = true;
     }
 
     if (message.channel != mediaChannel &&
-        await chat_manager.moveFilesByType(message, mediaChannel, data.mediaTypes))
+        await server_manager.moveFilesByType(message, mediaChannel, data.mediaTypes))
     {
         moved = true;
     }
 
     if (message.channel != filesChannel &&
-        await chat_manager.moveFilesExceptType(message, filesChannel, data.mediaTypes))
+        await server_manager.moveFilesExceptType(message, filesChannel, data.mediaTypes))
     {
         moved = true;
     }
@@ -87,7 +92,7 @@ client.on("messageCreate", async (message) =>
         await message.reply(funcs.getRandom(character.quotesBadChannelReaction));
         await message.delete();
 
-        const cleanedContent = chat_manager.removeLinks(message.content);
+        const cleanedContent = server_manager.removeLinks(message.content);
         if (cleanedContent.length > 0)
         {
             await generalChannel.send(
@@ -96,7 +101,7 @@ client.on("messageCreate", async (message) =>
             });
         }
     }
-});
+}
 
 
 
