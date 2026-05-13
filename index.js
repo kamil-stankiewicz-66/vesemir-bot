@@ -12,6 +12,7 @@ const client = new Discord.Client({
 
 const funcs = require('./function.js');
 const data = require('./data.js');
+const character = require('./character.js');
 const chat_manager = require('./chat_manager.js');
 
 
@@ -21,11 +22,11 @@ const chat_manager = require('./chat_manager.js');
 
 client.once('clientReady', async () => 
 {
-    client.user.setActivity('Dba o siedliszcze', {type: Discord.ActivityType.Listening});
+    client.user.setActivity('Dba o siedliszcze', {type: Discord.ActivityType.Playing});
 
     //say hello to users
     const channel = await client.channels.fetch(data.channels.general);
-    channel.send(funcs.getRandom(data.quotes));
+    channel.send(funcs.getRandom(character.quotes));
 
     //log
     console.log('vesemirbot is online');
@@ -50,7 +51,7 @@ client.on("messageCreate", async (message) =>
 
     if (message.content == 'ping vesemir')
     {
-        await message.reply(funcs.getRandom(data.quotes));
+        await message.reply(funcs.getRandom(character.quotes));
     }
     
 
@@ -83,7 +84,7 @@ client.on("messageCreate", async (message) =>
 
     if (moved)
     {
-        await message.reply(funcs.getRandom(data.quotesBadChannelReaction));
+        await message.reply(funcs.getRandom(character.quotesBadChannelReaction));
         await message.delete();
 
         const cleanedContent = chat_manager.removeLinks(message.content);
