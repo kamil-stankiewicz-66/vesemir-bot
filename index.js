@@ -121,6 +121,17 @@ client.on('interactionCreate', async (interaction) =>
     }
 
 
+    //cmd nice_day_module
+    const _nicedayModule = interaction.options.getBoolean('nice_day_module');
+
+    if (_nicedayModule != null)
+    {
+        dynamic_data.nicedayModule = _nicedayModule;
+
+        logs.push(`nice_day_module = ${dynamic_data.nicedayModule}`);
+    }
+
+
 
     //send log to chat
     if (logs.length > 0)
@@ -143,15 +154,25 @@ client.on("messageCreate", async (message) =>
     }
 
 
-    //answer for pings
-    if (await nice_day.handleNiceDay(message, data.niceDayResponseDelay.min, data.niceDayResponseDelay.max))
+    //hard ping
+    if (message.content == 'ping vesemir')
     {
-        if (await isThisReplied(message) || message.mentions.users.has(client.user.id) || message.content == 'ping vesemir')
+        await message.reply(funcs.getRandom(character.quotes));
+    }
+
+
+    //answer for pings
+    const isPingNotAllowed = dynamic_data.nicedayModule && 
+        await nice_day.handleNiceDay(message, data.niceDayResponseDelay.min, data.niceDayResponseDelay.max);
+        
+    if (!isPingNotAllowed)
+    {
+        if (await isThisReplied(message) || message.mentions.users.has(client.user.id))
         {
             await message.reply(funcs.getRandom(character.quotes));
         }
-    }    
-    
+    }
+
 
     //chat managment
     if (dynamic_data.messageSegregate)

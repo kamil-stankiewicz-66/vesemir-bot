@@ -48,6 +48,12 @@ const commands = [
             .setRequired(false)
         )
 
+        .addBooleanOption(option => option
+            .setName('nice_day_module')
+            .setDescription('Włącza lub wyłącza pisanie <Miłego dnia>')
+            .setRequired(false)
+        )
+
         .toJSON()
 ];
 

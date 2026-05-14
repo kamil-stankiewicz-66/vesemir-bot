@@ -33,6 +33,15 @@ function containsNiceDay(text)
 {
     const normalized = text
         .toLowerCase()
+        .replace(/ł/g, 'l')
+        .replace(/ą/g, 'a')
+        .replace(/ć/g, 'c')
+        .replace(/ę/g, 'e')
+        .replace(/ń/g, 'n')
+        .replace(/ó/g, 'o')
+        .replace(/ś/g, 's')
+        .replace(/ż/g, 'z')
+        .replace(/ź/g, 'z')
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '');
 
