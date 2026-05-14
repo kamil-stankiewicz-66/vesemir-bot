@@ -203,7 +203,6 @@ client.on("messageCreate", async (message) =>
     if (message.content == 'ping vesemir')
     {
         await message.reply(funcs.getRandom(character.quotes));
-        return;
     }
 
 
@@ -223,12 +222,16 @@ client.on("messageCreate", async (message) =>
 
 
     //answer for pings
-
+    
     const isPingAllowed = !niceDayFeedback && !goodNightFeedback;
 
     if (isPingAllowed)
     {
-        if (await isThisReplied(message) || message.mentions.users.has(client.user.id))
+        const isBotTagged = await isThisReplied(message) ||
+            message.mentions.users.has(client.user.id) || //bots profile tagged
+            message.guild.members.me.roles.cache.some(role => message.mentions.roles.has(role.id)); //bots role tagged
+
+        if (isBotTagged)
         {
             await message.reply(funcs.getRandom(character.quotes));
         }
@@ -260,32 +263,45 @@ async function messageFilter(message)
     {
         console.error("<error> channel fetch");
         console.error(error);
-        
+
         return;
     }
 
 
-    let moved = false;
+    const msgLinks = server_manager.getLinks(message.content);
+    const msgMedia = server_manager.getFilesByTypes(message, data.mediaTypes);
+    const msgFiles = server_manager.getFilesExceptTypes(message, data.mediaTypes);
 
-    if (message.channel.id != linksChannel.id &&
-        await server_manager.moveLinks(message, linksChannel))
+    const hasLinks = msgLinks.length > 0;
+    const hasMedia = msgMedia.length > 0;
+    const hasFiles = msgFiles.length > 0;
+
+    const isOnChannelLinks = message.channel.id == linksChannel.id;
+    const isOnChannelMedia = message.channel.id == mediaChannel.id;
+    const isOnChannelFiles = message.channel.id == filesChannel.id;
+
+    const moveLinksAllowed = hasLinks && (!isOnChannelLinks || (hasMedia || hasFiles));
+    const moveMediaAllowed = hasMedia && (!isOnChannelMedia || (hasLinks || hasFiles));
+    const moveFilesAllowed = hasFiles && (!isOnChannelFiles || (hasMedia || hasLinks));
+    
+
+    if (moveLinksAllowed)
     {
-        moved = true;
+        await server_manager.moveLinks(message, msgLinks, linksChannel);
     }
 
-    if (message.channel.id != mediaChannel.id &&
-        await server_manager.moveFilesByType(message, mediaChannel, data.mediaTypes))
+    if (moveMediaAllowed)
     {
-        moved = true;
+        await server_manager.moveFiles(message, msgMedia, mediaChannel);
     }
 
-    if (message.channel.id != filesChannel.id &&
-        await server_manager.moveFilesExceptType(message, filesChannel, data.mediaTypes))
+    if (moveFilesAllowed)
     {
-        moved = true;
+        await server_manager.moveFiles(message, msgFiles, filesChannel);
     }
 
-    if (moved)
+
+    if (moveLinksAllowed || moveMediaAllowed || moveFilesAllowed)
     {
         if (dynamic_data.replyWhenWrongChannel)
         {

@@ -1,10 +1,4 @@
-//links
-
-function getLinks(content)
-{
-    const links = content.match(/https?:\/\/[^\s]+/g) || [];
-    return [...new Set(links)];
-}
+//cleaner
 
 function removeLinks(content)
 {
@@ -36,7 +30,13 @@ function makeQuoteStyle(content)
 
 
 
-//files
+//get elements from message
+
+function getLinks(content)
+{
+    const links = content.match(/https?:\/\/[^\s]+/g) || [];
+    return [...new Set(links)];
+}
 
 function getFilesByTypes(message, types)
 {
@@ -81,10 +81,8 @@ function getFilesExceptTypes(message, types)
 
 //move to
 
-async function moveLinks(message, targetChannel)
+async function moveLinks(message, links, targetChannel)
 {
-    const links = getLinks(message.content);
-
     if (links.length == 0)
     {
         return false;
@@ -108,10 +106,8 @@ async function moveLinks(message, targetChannel)
     }
 }
 
-async function moveFilesByType(message, targetChannel, types)
+async function moveFiles(message, files, targetChannel)
 {
-    const files = getFilesByTypes(message, types);
-
     if (files.length == 0)
     {
         return false;
@@ -129,35 +125,7 @@ async function moveFilesByType(message, targetChannel, types)
     }
     catch (error)
     {
-        console.error('<error> moveFilesByType');
-        console.error(error);
-
-        return false;
-    }
-}
-
-async function moveFilesExceptType(message, targetChannel, types)
-{
-    const files = getFilesExceptTypes(message, types)
-
-    if (files.length == 0)
-    {
-        return false;
-    }
-    
-    try
-    {
-        await targetChannel.send(
-        {
-            content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}`,
-            files: files
-        });
-
-        return true;
-    }
-    catch (error)
-    {
-        console.error('<error> moveFilesExceptType');
+        console.error('<error> moveFiles');
         console.error(error);
 
         return false;
@@ -170,11 +138,10 @@ async function moveFilesExceptType(message, targetChannel, types)
 
 //end of file
 module.exports = {
-    getLinks,
     removeLinks,
+    getLinks,
     getFilesByTypes,
     getFilesExceptTypes,
     moveLinks,
-    moveFilesByType,
-    moveFilesExceptType
+    moveFiles,
 };
