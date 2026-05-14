@@ -30,6 +30,18 @@ const commands = [
             )
             .addChoices(
                 {
+                    name: 'show_good_night_vars',
+                    value: 'show_good_night_vars',
+                }
+            )
+            .addChoices(
+                {
+                    name: 'reset_good_night_vars',
+                    value: 'reset_good_night_vars',
+                }
+            )
+            .addChoices(
+                {
                     name: 'say_line_neutral',
                     value: 'say_line_neutral'
                 }
@@ -63,6 +75,12 @@ const commands = [
         .addBooleanOption(option => option
             .setName('nice_day_module')
             .setDescription('Włącza lub wyłącza pisanie <Miłego dnia>')
+            .setRequired(false)
+        )
+
+        .addBooleanOption(option => option
+            .setName('good_night_module')
+            .setDescription('Włącza lub wyłącza pisanie <Dobranoc>')
             .setRequired(false)
         )
 

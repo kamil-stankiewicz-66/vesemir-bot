@@ -23,24 +23,25 @@ const niceDayResponder = new DelayedPhraseResponder({
     ],
     response: 'Miłego dnia',
     minResponseDelay: 1,
-    maxResponseDelay: 30,
+    maxResponseDelay: 8,
     resetCron: '0 4 * * *'
 });
 
-// const goodNightResponder = new DelayedPhraseResponder({
-//     triggers: [
-//         'dobranoc',
-//         'dobrej nocy',
-//         'milej nocy',
-//         'spokojnej nocy',
-//         'kolorowych snow'
-//     ],
-//     response: 'Dobranoc',
-//     minResponseDelay: 1,
-//     maxResponseDelay: 15,
-//     resetCron: '0 18 * * *'
-// });
+const goodNightResponder = new DelayedPhraseResponder({
+    triggers: [
+        'dobranoc',
+        'dobrej nocy',
+        'milej nocy',
+        'spokojnej nocy',
+        'kolorowych snow'
+    ],
+    response: 'Dobranoc',
+    minResponseDelay: 1,
+    maxResponseDelay: 8,
+    resetCron: '0 18 * * *'
+});
 
 module.exports = {
-    niceDayResponder
+    niceDayResponder,
+    goodNightResponder
 };

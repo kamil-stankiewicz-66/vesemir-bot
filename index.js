@@ -76,10 +76,13 @@ client.on('interactionCreate', async (interaction) =>
     //cmd action
     const action = interaction.options.getString('action');
 
+    //dynamic vars
     if (action == 'show_dynamic_vars')
     {
         logs.push(funcs.log(dynamic_data));
     }
+
+    //nice day module
     else if (action == 'show_nice_day_vars')
     {
         logs.push(funcs.log(delayed_responder.niceDayResponder.getState()));
@@ -89,6 +92,18 @@ client.on('interactionCreate', async (interaction) =>
         delayed_responder.niceDayResponder.resetState();
         logs.push(funcs.log(delayed_responder.niceDayResponder.getState()));
     }
+
+    //good night module
+    else if (action == 'show_good_night_vars')
+    {
+        logs.push(funcs.log(delayed_responder.goodNightResponder.getState()));
+    }
+    else if(action == 'reset_good_night_vars')
+    {
+        delayed_responder.goodNightResponder.resetState();
+        logs.push(funcs.log(delayed_responder.goodNightResponder.getState()));
+    }
+
     else if (action == 'say_line_neutral')
     {
         logs.push(funcs.getRandom(character.quotes));
@@ -144,6 +159,16 @@ client.on('interactionCreate', async (interaction) =>
         logs.push(`nice_day_module = ${dynamic_data.nicedayModule}`);
     }
 
+    //cmd good_night_module
+    const _goodNightModule = interaction.options.getBoolean('good_night_module');
+
+    if (_goodNightModule != null)
+    {
+        dynamic_data.goodNightModule = _goodNightModule;
+
+        logs.push(`good_night_module = ${dynamic_data.goodNightModule}`);
+    }
+
 
 
     //send log to chat
@@ -178,9 +203,11 @@ client.on("messageCreate", async (message) =>
     const niceDayFeedback = dynamic_data.nicedayModule && 
         await delayed_responder.niceDayResponder.handle(message); //if true lock other options
 
+    const goodNightFeedback = dynamic_data.goodNightModule &&
+        await delayed_responder.goodNightResponder.handle(message); //if true lock other options
 
-    const isPingAllowed = !niceDayFeedback;
-    
+    const isPingAllowed = !niceDayFeedback && !goodNightFeedback;
+
     //answer for pings
     if (isPingAllowed)
     {

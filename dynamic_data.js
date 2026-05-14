@@ -2,7 +2,8 @@ const dynamicData = {
     messageSegregate: true,
     replyWhenWrongChannel: true,
     deleteWhenWrongChannel: true,
-    nicedayModule: true
+    nicedayModule: true,
+    goodNightModule: true
 };
 
 

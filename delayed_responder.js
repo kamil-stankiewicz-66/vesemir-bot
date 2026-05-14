@@ -83,7 +83,7 @@ class DelayedResponder
 
         if (this.state.isScheduled)
         {
-            return true; //lock other reply options
+            return false; //unlock other reply options
         }
 
         if (!this.containsTrigger(message.content))
@@ -91,7 +91,7 @@ class DelayedResponder
             return false; //unlock other reply options
         }
 
-        
+
         const delay = this.getRandomDelay();
 
         this.state.isScheduled = true;
