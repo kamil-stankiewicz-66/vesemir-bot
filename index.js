@@ -15,8 +15,8 @@ const funcs = require('./function.js');
 const data = require('./data.js');
 const character = require('./character.js');
 const server_manager = require('./server_manager.js');
-const dynamic_data = require('./dynamic_data');
-const nice_day = require('./nice_day.js');
+const dynamic_data = require('./dynamic_data.js');
+const delayed_responder = require('./delayed_responder_instance.js');
 
 
 
@@ -67,7 +67,6 @@ client.on('interactionCreate', async (interaction) =>
 
     //loading
     await interaction.deferReply();
-    await interaction.editReply('loading...');
 
 
     //logs array
@@ -83,12 +82,12 @@ client.on('interactionCreate', async (interaction) =>
     }
     else if (action == 'show_nice_day_vars')
     {
-        logs.push(funcs.log(nice_day.getNiceDayState()));
+        logs.push(funcs.log(delayed_responder.niceDayResponder.getState()));
     }
     else if(action == 'reset_nice_day_vars')
     {
-        nice_day.resetNiceDayState();
-        logs.push(funcs.log(nice_day.getNiceDayState()));
+        delayed_responder.niceDayResponder.resetState();
+        logs.push(funcs.log(delayed_responder.niceDayResponder.getState()));
     }
     else if (action == 'say_line_neutral')
     {
@@ -175,11 +174,15 @@ client.on("messageCreate", async (message) =>
     }
 
 
+    //delayed responders
+    const niceDayFeedback = dynamic_data.nicedayModule && 
+        await delayed_responder.niceDayResponder.handle(message); //if true lock other options
+
+
+    const isPingAllowed = !niceDayFeedback;
+    
     //answer for pings
-    const isPingNotAllowed = dynamic_data.nicedayModule && 
-        await nice_day.handleNiceDay(message, data.niceDayResponseDelay.min, data.niceDayResponseDelay.max);
-        
-    if (!isPingNotAllowed)
+    if (isPingAllowed)
     {
         if (await isThisReplied(message) || message.mentions.users.has(client.user.id))
         {
