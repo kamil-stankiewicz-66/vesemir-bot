@@ -16,6 +16,7 @@ const data = require('./data.js');
 const character = require('./character.js');
 const server_manager = require('./server_manager.js');
 const dynamic_data = require('./dynamic_data');
+const nice_day = require('./nice_day.js');
 
 
 
@@ -142,15 +143,14 @@ client.on("messageCreate", async (message) =>
     }
 
 
-    //answer for replies
-    const _isReplied = await isThisReplied(message);
-    if (_isReplied ||
-        message.mentions.users.has(client.user.id) || //tag
-        message.content == 'ping vesemir' //just ping
-    )
+    //answer for pings
+    if (await nice_day.handleNiceDay(message, data.niceDayResponseDelay.min, data.niceDayResponseDelay.max))
     {
-        await message.reply(funcs.getRandom(character.quotes));
-    }
+        if (await isThisReplied(message) || message.mentions.users.has(client.user.id) || message.content == 'ping vesemir')
+        {
+            await message.reply(funcs.getRandom(character.quotes));
+        }
+    }    
     
 
     //chat managment

@@ -11,9 +11,15 @@ const mediaTypes = [
     'audio'
 ];
 
+const niceDayResponseDelay = {
+    min: 1,
+    max: 30
+};
+
 
 //end of file
 module.exports = {
     channels,
-    mediaTypes
+    mediaTypes,
+    niceDayResponseDelay
 };
