@@ -90,12 +90,22 @@ async function moveLinks(message, targetChannel)
         return false;
     }
 
-    await targetChannel.send(
+    try
     {
-        content:`${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}\n${links.join('\n')}`
-    });
+        await targetChannel.send(
+        {
+            content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}\n${links.join('\n')}`
+        });
 
-    return true;
+        return true;
+    }
+    catch (error)
+    {
+        console.error('<error> moveLinks');
+        console.error(error);
+
+        return false;
+    }
 }
 
 async function moveFilesByType(message, targetChannel, types)
@@ -107,13 +117,23 @@ async function moveFilesByType(message, targetChannel, types)
         return false;
     }
 
-    await targetChannel.send(
+    try
     {
-        content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}`,
-        files: files
-    });
+        await targetChannel.send(
+        {
+            content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}`,
+            files: files
+        });
 
-    return true;
+        return true;
+    }
+    catch (error)
+    {
+        console.error('<error> moveFilesByType');
+        console.error(error);
+
+        return false;
+    }
 }
 
 async function moveFilesExceptType(message, targetChannel, types)
@@ -125,13 +145,23 @@ async function moveFilesExceptType(message, targetChannel, types)
         return false;
     }
     
-    await targetChannel.send(
+    try
     {
-        content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}`,
-        files: files
-    });
+        await targetChannel.send(
+        {
+            content: `${createMovedHeader(message)}\n${makeQuoteStyle(removeLinks(message.content))}`,
+            files: files
+        });
 
-    return true;
+        return true;
+    }
+    catch (error)
+    {
+        console.error('<error> moveFilesExceptType');
+        console.error(error);
+
+        return false;
+    }
 }
 
 

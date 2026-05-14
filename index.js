@@ -27,9 +27,16 @@ client.once('clientReady', async () =>
 {
     updateAcivity()
 
-    //say hello to users
-    const channel = await client.channels.fetch(data.channels.general);
-    channel.send(funcs.getRandom(character.quotes));
+    try
+    {
+        //say hello to users
+        const channel = await client.channels.fetch(data.channels.general);
+        channel.send(funcs.getRandom(character.quotes));
+    }
+    catch
+    {
+        console.error(`<error> Channel ${data.channels.general} not found.`);
+    }
 
     //log
     console.log('log: vesemir-bot is online');
@@ -196,19 +203,29 @@ client.on("messageCreate", async (message) =>
     if (message.content == 'ping vesemir')
     {
         await message.reply(funcs.getRandom(character.quotes));
+        return;
     }
 
 
     //delayed responders
-    const niceDayFeedback = dynamic_data.nicedayModule && 
-        await delayed_responder.niceDayResponder.handle(message); //if true lock other options
 
-    const goodNightFeedback = dynamic_data.goodNightModule &&
-        await delayed_responder.goodNightResponder.handle(message); //if true lock other options
+    let niceDayFeedback = false;
+    if (dynamic_data.nicedayModule)
+    {
+        niceDayFeedback = await delayed_responder.niceDayResponder.handle(message); //if true lock other options
+    }
+
+    let goodNightFeedback = false;
+    if (dynamic_data.goodNightModule)
+    {
+        goodNightFeedback = await delayed_responder.goodNightResponder.handle(message); //if true lock other options
+    }
+
+
+    //answer for pings
 
     const isPingAllowed = !niceDayFeedback && !goodNightFeedback;
 
-    //answer for pings
     if (isPingAllowed)
     {
         if (await isThisReplied(message) || message.mentions.users.has(client.user.id))
@@ -227,26 +244,42 @@ client.on("messageCreate", async (message) =>
 
 async function messageFilter(message)
 {
-    const generalChannel = await client.channels.fetch(data.channels.general);
-    const linksChannel = await client.channels.fetch(data.channels.links);
-    const mediaChannel = await client.channels.fetch(data.channels.media);
-    const filesChannel = await client.channels.fetch(data.channels.files);
+    let generalChannel;
+    let linksChannel;
+    let mediaChannel;
+    let filesChannel;
+
+    try
+    {
+        generalChannel = await client.channels.fetch(data.channels.general);
+        linksChannel = await client.channels.fetch(data.channels.links);
+        mediaChannel = await client.channels.fetch(data.channels.media);
+        filesChannel = await client.channels.fetch(data.channels.files);
+    }
+    catch (error)
+    {
+        console.error("<error> channel fetch");
+        console.error(error);
+        
+        return;
+    }
+
 
     let moved = false;
 
-    if (message.channel != linksChannel &&
+    if (message.channel.id != linksChannel.id &&
         await server_manager.moveLinks(message, linksChannel))
     {
         moved = true;
     }
 
-    if (message.channel != mediaChannel &&
+    if (message.channel.id != mediaChannel.id &&
         await server_manager.moveFilesByType(message, mediaChannel, data.mediaTypes))
     {
         moved = true;
     }
 
-    if (message.channel != filesChannel &&
+    if (message.channel.id != filesChannel.id &&
         await server_manager.moveFilesExceptType(message, filesChannel, data.mediaTypes))
     {
         moved = true;
@@ -261,15 +294,31 @@ async function messageFilter(message)
 
         if (dynamic_data.deleteWhenWrongChannel)
         {
-            await message.delete();
+            try
+            {
+                await message.delete();
+            }
+            catch (error)
+            {
+                console.error("<error> message.delete");
+                console.error(error);
+            }
 
             const cleanedContent = server_manager.removeLinks(message.content);
             if (cleanedContent.length > 0)
             {
-                await generalChannel.send(
+                try
                 {
-                    content: `${message.author}: "*${cleanedContent}*"`
-                });
+                    await generalChannel.send(
+                    {
+                        content: `${message.author}: "*${cleanedContent}*"`
+                    });
+                }
+                catch (error)
+                {
+                    console.error('<error> generalChannel.send');
+                    console.error(error);
+                }
             }
         }
     }
