@@ -24,6 +24,12 @@ const commands = [
             )
             .addChoices(
                 {
+                    name: 'reset_nice_day_vars',
+                    value: 'reset_nice_day_vars',
+                }
+            )
+            .addChoices(
+                {
                     name: 'say_line_neutral',
                     value: 'say_line_neutral'
                 }

@@ -65,6 +65,11 @@ client.on('interactionCreate', async (interaction) =>
     }
 
 
+    //loading
+    await interaction.deferReply();
+    await interaction.editReply('loading...');
+
+
     //logs array
     const logs = [];
 
@@ -79,6 +84,10 @@ client.on('interactionCreate', async (interaction) =>
     else if (action == 'show_nice_day_vars')
     {
         logs.push(funcs.log(nice_day.getNiceDayState()));
+    }
+    else if(action == 'reset_nice_day_vars')
+    {
+        nice_day.resetNiceDayState();
     }
     else if (action == 'say_line_neutral')
     {
@@ -140,12 +149,12 @@ client.on('interactionCreate', async (interaction) =>
     //send log to chat
     if (logs.length > 0)
     {
-        await interaction.reply(logs.join('\n'));
+        await interaction.editReply(logs.join('\n'));
     }
     else
     {
         const _lines = [...character.quotes, ...character.quotesWrongChannelReaction];
-        await interaction.reply(funcs.getRandom(_lines));
+        await interaction.editReply(funcs.getRandom(_lines));
     }
 });
 

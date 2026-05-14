@@ -15,6 +15,12 @@ function getNiceDayState()
     return {...niceDayState};
 }
 
+function resetNiceDayState()
+{
+    niceDayState.isUsed = false;
+    niceDayState.isScheduled = false;
+}
+
 
 
 
@@ -22,8 +28,7 @@ function getNiceDayState()
 
 cron.schedule('0 4 * * *', () =>
 {
-    niceDayState.isUsed = false;
-    niceDayState.isScheduled = false;
+    resetNiceDayState();
 },
 {
     timezone: 'Europe/Warsaw'
@@ -130,5 +135,6 @@ function sleep(ms)
 
 module.exports = {
     getNiceDayState,
+    resetNiceDayState,
     handleNiceDay
 };
