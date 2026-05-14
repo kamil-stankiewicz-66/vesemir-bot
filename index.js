@@ -88,6 +88,7 @@ client.on('interactionCreate', async (interaction) =>
     else if(action == 'reset_nice_day_vars')
     {
         nice_day.resetNiceDayState();
+        logs.push(funcs.log(nice_day.getNiceDayState()));
     }
     else if (action == 'say_line_neutral')
     {
