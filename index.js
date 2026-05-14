@@ -72,9 +72,13 @@ client.on('interactionCreate', async (interaction) =>
     //cmd action
     const action = interaction.options.getString('action');
 
-    if (action == 'show_vars')
+    if (action == 'show_dynamic_vars')
     {
         logs.push(funcs.log(dynamic_data));
+    }
+    else if (action == 'show_nice_day_vars')
+    {
+        logs.push(funcs.log(nice_day.getNiceDayState()));
     }
     else if (action == 'say_line_neutral')
     {

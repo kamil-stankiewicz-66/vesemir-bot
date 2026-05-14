@@ -10,6 +10,11 @@ const niceDayState = {
     isScheduled: false,
 };
 
+function getNiceDayState()
+{
+    return {...niceDayState};
+}
+
 
 
 
@@ -124,5 +129,6 @@ function sleep(ms)
 //end of file
 
 module.exports = {
+    getNiceDayState,
     handleNiceDay
 };

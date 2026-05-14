@@ -12,8 +12,14 @@ const commands = [
             .setRequired(false)
             .addChoices(
                 {
-                    name: 'show_vars',
-                    value: 'show_vars'
+                    name: 'show_dynamic_vars',
+                    value: 'show_dynamic_vars'
+                }
+            )
+            .addChoices(
+                {
+                    name: 'show_nice_day_vars',
+                    value: 'show_nice_day_vars',
                 }
             )
             .addChoices(
