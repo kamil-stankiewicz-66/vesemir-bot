@@ -245,7 +245,7 @@ client.on("messageCreate", async (message) =>
             }
             else
             {
-                await message.reply(funcs.getRandom(character.quotes));
+                await message.reply('Hmm...');
             }
         }
     }
