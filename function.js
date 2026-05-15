@@ -20,9 +20,32 @@ function log(map)
         .join('\n');
 }
 
+function removeBotMentions(message, client)
+{
+    let content = message.content;
+
+    content = content.replace(
+        new RegExp(`<@!?${client.user.id}>`, 'g'),
+        ''
+    );
+
+    const botMember = message.guild.members.me;
+
+    botMember.roles.cache.forEach(role =>
+    {
+        content = content.replace(
+            new RegExp(`<@&${role.id}>`, 'g'),
+            ''
+        );
+    });
+
+    return content.trim();
+}
+
 
 //end of file
 module.exports = {
     getRandom,
-    log
+    log,
+    removeBotMentions
 };

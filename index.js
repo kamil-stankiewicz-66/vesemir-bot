@@ -17,6 +17,7 @@ const character = require('./character.js');
 const server_manager = require('./server_manager.js');
 const dynamic_data = require('./dynamic_data.js');
 const delayed_responder = require('./delayed_responder_instance.js');
+const ai_responder = require('./ai_responder.js');
 
 
 
@@ -233,7 +234,19 @@ client.on("messageCreate", async (message) =>
 
         if (isBotTagged)
         {
-            await message.reply(funcs.getRandom(character.quotes));
+            await message.channel.sendTyping();
+
+            //try get prompt
+            const ans = await createRPGReply(message);
+            
+            if (ans.length > 0)
+            {
+                await message.reply(ans);
+            }
+            else
+            {
+                await message.reply(funcs.getRandom(character.quotes));
+            }
         }
     }
 
@@ -244,6 +257,45 @@ client.on("messageCreate", async (message) =>
         await messageFilter(message);
     }
 });
+
+async function createRPGReply(message)
+{
+    //clear question
+    const question = funcs.removeBotMentions(message, client).trim();
+
+    if (question.length < 2)
+    {
+        //empty message
+        return '';
+    }
+
+    //prevent giant prompts
+    const safeQuestion = question.slice(0, 1000);
+
+    try
+    {
+        const ans = await ai_responder.ask(safeQuestion);
+
+        //empty ai response
+        if (!ans || ans.trim().length == 0)
+        {
+            return 'Hmm...';
+        }
+
+
+        //ai
+        return ans.trim();
+    }
+    catch (error)
+    {
+        console.error('<error> rpg_responder');
+        console.error(error);
+
+        
+        //ai error
+        return 'Hmm...';
+    }
+}
 
 async function messageFilter(message)
 {
