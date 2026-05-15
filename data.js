@@ -1,8 +1,10 @@
+require('dotenv').config();
+
 const channels = {
-    general: '1503203283412451340',
-    media: '1503203283412451341',
-    files: '1503214039948464138',
-    links: '1503203283861246013'
+    general: process.env.CHID_GENERAL,
+    media: process.env.CHID_MEDIA,
+    files: process.env.CHID_FILES,
+    links: process.env.CHID_LINKS
 };
 
 const mediaTypes = [
