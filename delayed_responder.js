@@ -36,7 +36,7 @@ class DelayedResponder
     {
         cron.schedule(this.resetCron, () =>
         {
-            resetState();
+            this.resetState();
         },
         {
             timezone: this.timezone
