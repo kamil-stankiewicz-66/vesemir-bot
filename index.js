@@ -200,7 +200,7 @@ client.on('interactionCreate', async (interaction) =>
 client.on("messageCreate", async (message) => 
 {
     //add message to memory
-    chat_history.addEntry(message);
+    chat_history.addEntry(message, client);
 
 
     //skip bots message

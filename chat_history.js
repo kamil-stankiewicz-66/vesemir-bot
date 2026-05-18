@@ -2,9 +2,23 @@ const limited_queue = require('./limited_queue.js');
 
 const history = new limited_queue(10);
 
-function addEntry(message)
+function addEntry(message, client)
 {
-    history.add(`${message.author}: ${message.content}`);
+    const authorName =
+        message.member?.displayName ||
+        message.author.username ||
+        'unknown';
+
+    const content = funcs
+        .removeBotMentions(message, client)
+        .trim();
+
+    if (content.length == 0)
+    {
+        return;
+    }
+
+    history.add(`${authorName}: ${content}`);
 }
 
 function getText()
