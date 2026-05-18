@@ -143,5 +143,5 @@ module.exports = {
     getFilesByTypes,
     getFilesExceptTypes,
     moveLinks,
-    moveFiles,
+    moveFiles
 };

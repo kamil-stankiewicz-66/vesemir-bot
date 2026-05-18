@@ -18,6 +18,7 @@ const server_manager = require('./server_manager.js');
 const dynamic_data = require('./dynamic_data.js');
 const delayed_responder = require('./delayed_responder_instance.js');
 const ai_responder = require('./ai_responder.js');
+const chat_history = require('./chat_history.js');
 
 
 
@@ -58,7 +59,7 @@ function updateAcivity()
 
 
 
-//update
+//catch command
 
 client.on('interactionCreate', async (interaction) =>
 {
@@ -191,8 +192,17 @@ client.on('interactionCreate', async (interaction) =>
     }
 });
 
+
+
+
+//catch message
+
 client.on("messageCreate", async (message) => 
 {
+    //add message to memory
+    chat_history.addEntry(message);
+
+
     //skip bots message
     if (message.author.bot)
     {
@@ -269,12 +279,18 @@ async function createRPGReply(message)
         return '';
     }
 
-    //prevent giant prompts
     const safeQuestion = question.slice(0, 1000);
+
+    const historyText = chat_history
+        .getText()
+        .slice(0, 2000);
+
+    const prompt = `Historia ostatnich wiadomości: ${historyText} 
+    Pytanie użytkownika: ${safeQuestion}`;
 
     try
     {
-        const ans = await ai_responder.ask(safeQuestion);
+        const ans = await ai_responder.ask(prompt);
 
         //empty ai response
         if (!ans || ans.trim().length == 0)
