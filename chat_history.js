@@ -1,4 +1,5 @@
 const limited_queue = require('./limited_queue.js');
+const funcs = require('./function.js');
 
 const history = new limited_queue(10);
 

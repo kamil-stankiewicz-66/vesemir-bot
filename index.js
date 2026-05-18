@@ -344,9 +344,18 @@ async function messageFilter(message)
     const hasMedia = msgMedia.length > 0;
     const hasFiles = msgFiles.length > 0;
 
+    const isOnChannelGeneral = message.channel.id == generalChannel.id;
     const isOnChannelLinks = message.channel.id == linksChannel.id;
     const isOnChannelMedia = message.channel.id == mediaChannel.id;
     const isOnChannelFiles = message.channel.id == filesChannel.id;
+
+
+    //skip if this unknown channel
+    if(!isOnChannelGeneral && !isOnChannelLinks && !isOnChannelMedia && !isOnChannelFiles)
+    {
+        return;
+    }
+
 
     const moveLinksAllowed = hasLinks && (!isOnChannelLinks || (hasMedia || hasFiles));
     const moveMediaAllowed = hasMedia && (!isOnChannelMedia || (hasLinks || hasFiles));
